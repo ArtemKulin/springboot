@@ -1,5 +1,6 @@
 package ru.kulinartem.springboot.service;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kulinartem.springboot.entity.User;
 
@@ -16,7 +17,7 @@ public interface UserService {
 
     public void deleteItem(User item);
 
-    public void updateItem(User item, long id) throws UserException;
+    public void updateItem(User item, long id) throws UsernameNotFoundException;
 
     public User getItemByEmail(String email);
 }

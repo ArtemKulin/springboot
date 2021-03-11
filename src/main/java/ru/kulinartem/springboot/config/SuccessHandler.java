@@ -6,10 +6,8 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import ru.kulinartem.springboot.repository.UserRepository;
-import ru.kulinartem.springboot.service.UserService;
 
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -26,9 +24,9 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
     }
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        String name = httpServletRequest.getParameter("email");
+        String name = httpServletRequest.getParameter("username");
         long id = repository.findByEmail(name).get().getId();
         if (roles.contains("ROLE_ADMIN")) {
             httpServletResponse.sendRedirect("/admin/");

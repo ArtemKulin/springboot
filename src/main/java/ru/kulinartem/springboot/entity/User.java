@@ -38,7 +38,7 @@ public class User implements UserDetails {
     private Role role;
 
     @Transient
-    private final Set<Role> roles = new HashSet<>();
+    private Set<Role> roles = new HashSet<>();
 
     public User() {
     }
@@ -111,6 +111,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        roles.add(new Role("ROLE_USER"));
         roles.add(this.getRole());
         return roles;
     }

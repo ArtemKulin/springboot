@@ -109,10 +109,20 @@ public class User implements UserDetails {
         this.role = role;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        roles.add(new Role("ROLE_USER"));
         roles.add(this.getRole());
+        if (this.role.getRole().equals("ROLE_ADMIN")) {
+            roles.add(new Role("ROLE_USER"));
+        }
         return roles;
     }
 

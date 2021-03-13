@@ -119,10 +119,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        roles.add(this.getRole());
-        if (this.role.getRole().equals("ROLE_ADMIN")) {
-            roles.add(new Role("ROLE_USER"));
-        }
+        roles.add(this.role);
+        roles.add(new Role("ROLE_USER"));
         return roles;
     }
 
@@ -178,11 +176,11 @@ public class User implements UserDetails {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(role, user.role) && Objects.equals(roles, user.roles);
+        return age == user.age && Objects.equals(name, user.name) && Objects.equals(lastName, user.lastName) && email.equals(user.email) && Objects.equals(password, user.password);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, lastName, age, email, password, role, roles);
+        return Objects.hash(name, lastName, age, email, password);
     }
 }

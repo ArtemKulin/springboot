@@ -23,6 +23,14 @@
     <label for="password">Введите пароль: </label>
     <input type="text" th:field="*{password}" id="password"/>
     <br>
+
+
+    <select th:field="*{role}">
+        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"></option>
+    </select>
+
+
+
     <input type="submit" value="Создать нового пользователя">
 
 </form>

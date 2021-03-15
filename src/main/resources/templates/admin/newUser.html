@@ -25,9 +25,12 @@
     <br>
 
 
-    <select th:field="*{role}">
-        <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role}"></option>
-    </select>
+    <label for="roles">Выберите роль</label>
+    <br>
+        <select th:field="*{role}" multiple id="roles">
+            <option th:each="role : ${roles}" th:value="${role.id}" th:text="${role.role.replaceAll('ROLE_', '')}"></option>
+        </select>
+    <br>
 
 
 

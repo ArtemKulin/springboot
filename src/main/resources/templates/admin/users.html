@@ -7,7 +7,10 @@
     <title>All users page</title>
 </head>
 <body>
-<p class="h3"><span th:text="${users}"></span></p>
+<p class="h3" th:switch="${currentUser.getRole().role}"><span th:text="${currentUser.getEmail()}">with roles </span>
+    <span th:case="ROLE_ADMIN">ADMIN USER</span>
+    <span th:case="ROLE_USER">USER</span>
+</p>
 <nav class="nav flex-column nav-pills">
     <a class="nav-link" href="#">Admin</a>
     <a class="nav-link" href="#">User</a>
@@ -33,7 +36,10 @@
         <div class="col" th:text="${user.lastName}">lastname></div>
         <div class="col" th:text="${user.age}">age></div>
         <div class="col" th:text="${user.email}">email></div>
-        <div class="col" th:text="${user.roles}"></div>
+        <div class="col" th:switch="${user.role.role}">
+            <span th:case="ROLE_ADMIN">ADMIN  USER</span>
+            <span th:case="ROLE_USER">USER</span>
+        </div>
         <div class="col">
             <a class="btn btn-success" th:method="GET" th:href="@{/admin/{id}/edit(id=${user.getId()})}" role="button">edit</a>
         </div>

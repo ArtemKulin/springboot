@@ -33,7 +33,7 @@ public class User implements UserDetails {
     @Column (name = "password")
     private String password;
 
-    @ManyToOne (cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne
     @JoinColumn (name = "role_id", foreignKey = @ForeignKey(name = "role_id_fk"))
     private Role role;
 

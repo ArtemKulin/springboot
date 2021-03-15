@@ -1,34 +1,23 @@
 package ru.kulinartem.springboot.controller;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.kulinartem.springboot.entity.Role;
 import ru.kulinartem.springboot.entity.User;
-import ru.kulinartem.springboot.service.RoleService;
 import ru.kulinartem.springboot.service.UserService;
-
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 
 @Controller
 @RequestMapping("/admin")
 public class Admins {
 
     private final UserService userService;
-    private final RoleService roleService;
 
     @Autowired
-    public Admins(@Qualifier("UserServiceImpl") UserService user, @Qualifier("RoleServiceImpl") RoleService roleService) {
+    public Admins(@Qualifier("UserServiceImpl") UserService user) {
         this.userService = user;
-        this.roleService = roleService;
     }
 
     @GetMapping("/")
@@ -51,7 +40,6 @@ public class Admins {
 
     @GetMapping("/new")
     public String showNewUserPage(@ModelAttribute("newUser") User newUser, Model model) {
-        model.addAttribute("roles", roleService.getAllItems());
         return "admin/newUser";
     }
 

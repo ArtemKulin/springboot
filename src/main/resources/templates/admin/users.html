@@ -7,7 +7,7 @@
     <title>All users page</title>
 </head>
 <body>
-
+<!--Верхний навбар-->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav mr-auto" th:switch="${currentUser.getRole().role}">
@@ -24,16 +24,82 @@
     </span>
     </div>
 </nav>
+<div class="container-fluid">
+<!--    Левый навбар-->
+    <div class="row">
+        <div class="col-1">
+            <nav class="nav flex-column nav-pills">
+                <a class="nav-link" href="#">Admin</a>
+                <a class="nav-link" href="#">User</a>
+            </nav>
+        </div>
+<!--        Основной контент-->
+        <div class="col-11">
+            <nav class="navbar navbar-light bg-light">
+                <span class="navbar-text">
+                    All users
+                </span>
+            </nav>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Users table</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">New user</a>
+                </li>
+            </ul>
+            <!--Вкладка для показа всех пользователей-->
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">First name</th>
+                            <th scope="col">Last name</th>
+                            <th scope="col">Age</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Edit</th>
+                            <th scope="col">Delete</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}">id</td>
+                            <td th:text="${user.name}">name</td>
+                            <td th:text="${user.lastName}">lastname</td>
+                            <td th:text="${user.age}">age</td>
+                            <td th:text="${user.email}">email</td>
+                            <td th:switch="${user.role.role}">
+                                <span th:case="ROLE_ADMIN">ADMIN  USER</span>
+                                <span th:case="ROLE_USER">USER</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-info" th:method="GET" th:href="@{/admin/{id}/edit(id=${user.getId()})}" role="button">edit</a>
+                            </td>
+                            <td>
+                                <a class="btn btn-danger" th:method="DELETE" th:href="@{/admin/{id}/(id=${user.getId()})}" role="button">delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
-<!--<p class="h4" th:switch="${currentUser.getRole().role}">-->
-<!--    <span><strong th:text="${currentUser.getEmail()}"></strong> with roles</span>-->
-<!--    <span th:case="ROLE_ADMIN">ADMIN USER</span>-->
-<!--    <span th:case="ROLE_USER">USER</span>-->
-<!--</p>-->
-<nav class="nav flex-column nav-pills">
-    <a class="nav-link" href="#">Admin</a>
-    <a class="nav-link" href="#">User</a>
-</nav>
+                </div>
+                <!--    Вкладка для создания пользователя-->
+                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...
+
+
+
+
+                </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
 
 
 <h2>Admin panel</h2>
@@ -60,7 +126,7 @@
             <span th:case="ROLE_USER">USER</span>
         </div>
         <div class="col">
-            <a class="btn btn-success" th:method="GET" th:href="@{/admin/{id}/edit(id=${user.getId()})}" role="button">edit</a>
+            <a class="btn btn-info" th:method="GET" th:href="@{/admin/{id}/edit(id=${user.getId()})}" role="button">edit</a>
         </div>
         <div class="col">
             <a class="btn btn-danger" th:method="DELETE" th:href="@{/admin/{id}/(id=${user.getId()})}" role="button">delete</a>

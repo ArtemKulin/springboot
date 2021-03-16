@@ -7,10 +7,29 @@
     <title>All users page</title>
 </head>
 <body>
-<p class="h3" th:switch="${currentUser.getRole().role}"><span th:text="${currentUser.getEmail()}">with roles </span>
-    <span th:case="ROLE_ADMIN">ADMIN USER</span>
-    <span th:case="ROLE_USER">USER</span>
-</p>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto" th:switch="${currentUser.getRole().role}">
+            <li class="nav-item" style="color: white">
+                <span><strong th:text="${currentUser.getEmail()}"></strong> with roles: </span>
+                <span th:case="ROLE_ADMIN">ADMIN USER</span>
+                <span th:case="ROLE_USER">USER</span>
+            </li>
+        </ul>
+        <span class="navbar-text">
+            <form th:method="POST" action="/auth/logout"  style="outline: none !important">
+                <input type="submit" value="Logout" style="color: white; background: none; border: none">
+            </form>
+    </span>
+    </div>
+</nav>
+
+<!--<p class="h4" th:switch="${currentUser.getRole().role}">-->
+<!--    <span><strong th:text="${currentUser.getEmail()}"></strong> with roles</span>-->
+<!--    <span th:case="ROLE_ADMIN">ADMIN USER</span>-->
+<!--    <span th:case="ROLE_USER">USER</span>-->
+<!--</p>-->
 <nav class="nav flex-column nav-pills">
     <a class="nav-link" href="#">Admin</a>
     <a class="nav-link" href="#">User</a>

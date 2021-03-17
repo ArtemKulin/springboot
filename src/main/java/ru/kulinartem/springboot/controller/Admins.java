@@ -27,20 +27,22 @@ public class Admins {
     }
 
     @GetMapping("/")
-    public String showAdminRootPage(Model model, Principal principal) {
+    public String showAdminRootPage(@ModelAttribute("newUser") User newUser, Model model, Principal principal) {
         String name = principal.getName();
         User user = userService.getItemByEmail(name);
         model.addAttribute("currentUser", user);
         model.addAttribute("users", userService.getAllItems());
+        model.addAttribute("roles", roleService.getAllItems());
         return "admin/users";
     }
 
     @GetMapping("/users")
-    public String showAllUsersPage(Model model, Principal principal) {
+    public String showAllUsersPage(@ModelAttribute("newUser") User newUser, Model model, Principal principal) {
         String name = principal.getName();
         User user = userService.getItemByEmail(name);
         model.addAttribute("currentUser", user);
         model.addAttribute("users", userService.getAllItems());
+        model.addAttribute("roles", roleService.getAllItems());
         return "admin/users";
     }
 

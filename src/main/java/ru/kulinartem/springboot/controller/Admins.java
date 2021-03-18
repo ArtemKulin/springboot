@@ -65,6 +65,12 @@ public class Admins {
         return "redirect:/admin/";
     }
 
+//    @PatchMapping("/users")
+//    public String editUser(@ModelAttribute("user") User editedUser) throws UsernameNotFoundException {
+//        userService.updateItem(editedUser, editedUser.getId());
+//        return "redirect:/admin/";
+//    }
+
     @GetMapping("/{id}/edit")
     public String showEditUserPage(@PathVariable("id") long id, Model model) throws Exception {
         model.addAttribute("user", userService.getItemById(id));

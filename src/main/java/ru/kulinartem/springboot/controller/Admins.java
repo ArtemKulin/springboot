@@ -36,15 +36,15 @@ public class Admins {
         return "admin/users";
     }
 
-    @GetMapping("/users")
-    public String showAllUsersPage(@ModelAttribute("newUser") User newUser, Model model, Principal principal) {
-        String name = principal.getName();
-        User user = userService.getItemByEmail(name);
-        model.addAttribute("currentUser", user);
-        model.addAttribute("users", userService.getAllItems());
-        model.addAttribute("roles", roleService.getAllItems());
-        return "admin/users";
-    }
+//    @GetMapping("/users")
+//    public String showAllUsersPage(@ModelAttribute("newUser") User newUser, Model model, Principal principal) {
+//        String name = principal.getName();
+//        User user = userService.getItemByEmail(name);
+//        model.addAttribute("currentUser", user);
+//        model.addAttribute("users", userService.getAllItems());
+//        model.addAttribute("roles", roleService.getAllItems());
+//        return "admin/users";
+//    }
 
     @GetMapping("/{id}")
     public String showUserPage(@PathVariable("id") long id, Model model) throws Exception {
@@ -60,6 +60,7 @@ public class Admins {
 
     @PostMapping("/users")
     public String createNewUser(@ModelAttribute("newUser") User newUser, Model model) {
+        model.addAttribute("editedUser", newUser);
         newUser.setPassword(new BCryptPasswordEncoder(12).encode(newUser.getPassword()));
         userService.saveItem(newUser);
         return "redirect:/admin/";
@@ -87,5 +88,11 @@ public class Admins {
     public String deleteUser(@ModelAttribute("user") User deletedUser) {
         userService.deleteItem(deletedUser);
         return "redirect:/admin/";
+    }
+
+    @PostMapping("/edit")
+    public String editModal(@ModelAttribute("editUser") User editedUser) {
+        userService.saveItem(editedUser);
+        return "redirect:/";
     }
 }

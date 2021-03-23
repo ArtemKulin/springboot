@@ -1,15 +1,34 @@
 'use distinct'
 
-const modalTrigger = document.querySelector('[data-toggle]'),
-    modal = document.querySelector('.modal'),
-    modalCloseBtn = document.querySelector('.close');
+$(document).ready(function () {
 
-modalTrigger.addEventListener('click', () => {
-    modal.classList.add('show');
-    modal.classList.remove('hide');
-});
+    $('.table .editButton').on('click', function (event) {
+        event.preventDefault();
+        let href = $(this).attr('href');
+        let text = $(this).text(); //return New or Edit
 
-modalTrigger.addEventListener('click', () => {
-    modal.classList.add('hide');
-    modal.classList.remove('show');
+        if (text === 'Edit') {
+            $.get(href, function (User, status) {
+                $('.myForm #id').val(user.id);
+                $('.myForm #name').val(user.name);
+                $('.myForm #lastName').val(user.lastName);
+                $('.myForm #email').val(user.email);
+                $('.myForm #role').val(user.role);
+                $('.myForm #age').val(user.age);
+            });
+            $('.myForm #exampleModal').modal();
+        } else {
+            $('.myForm #id').val('');
+            $('.myForm #name').val('');
+            $('.myForm #capital').val('');
+            $('.myForm #exampleModal').modal();
+        }
+    });
+
+    $('.table .delBtn').on('click', function (event) {
+        event.preventDefault();
+        var href = $(this).attr('href');
+        $('#myModal #delRef').attr('href', href);
+        $('#myModal').modal();
+    });
 });

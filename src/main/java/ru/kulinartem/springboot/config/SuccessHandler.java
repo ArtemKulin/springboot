@@ -29,7 +29,7 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
         String name = httpServletRequest.getParameter("username");
         long id = repository.findByEmail(name).get().getId();
         if (roles.contains("ROLE_ADMIN")) {
-            httpServletResponse.sendRedirect("/admin/");
+            httpServletResponse.sendRedirect("/admin/users");
         } else {
             httpServletResponse.sendRedirect("/user/" + id);
         }

@@ -26,8 +26,8 @@ public class Admins {
         this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String showAdminRootPage(@ModelAttribute("newUser") User newUser, Model model, Principal principal) {
+    @GetMapping("/users")
+    public String showAllUsersPage(@ModelAttribute("newUser") User newUser, Model model, Principal principal) {
         String name = principal.getName();
         User user = userService.getItemByEmail(name);
         model.addAttribute("currentUser", user);
@@ -36,20 +36,9 @@ public class Admins {
         return "admin/users";
     }
 
-//    @GetMapping("/users")
-//    public String showAllUsersPage(@ModelAttribute("newUser") User newUser, Model model, Principal principal) {
-//        String name = principal.getName();
-//        User user = userService.getItemByEmail(name);
-//        model.addAttribute("currentUser", user);
-//        model.addAttribute("users", userService.getAllItems());
-//        model.addAttribute("roles", roleService.getAllItems());
-//        return "admin/users";
-//    }
-
     @GetMapping("/{id}")
-    public String showUserPage(@PathVariable("id") long id, Model model) throws Exception {
-        model.addAttribute("user", userService.getItemById(id));
-        return "admin/user";
+    public User showUserPage(@PathVariable("id") long id) throws Exception {
+        return userService.getItemById(id);
     }
 
     @GetMapping("/new")
@@ -58,13 +47,13 @@ public class Admins {
         return "admin/newUser";
     }
 
-    @PostMapping("/users")
-    public String createNewUser(@ModelAttribute("newUser") User newUser, Model model) {
-        model.addAttribute("editedUser", newUser);
-        newUser.setPassword(new BCryptPasswordEncoder(12).encode(newUser.getPassword()));
-        userService.saveItem(newUser);
-        return "redirect:/admin/";
-    }
+//    @PostMapping("/users")
+//    public String createNewUser(@ModelAttribute("newUser") User newUser, Model model) {
+//        model.addAttribute("editedUser", newUser);
+//        newUser.setPassword(new BCryptPasswordEncoder(12).encode(newUser.getPassword()));
+//        userService.saveItem(newUser);
+//        return "redirect:/admin/users";
+//    }
 
 //    @PatchMapping("/users")
 //    public String editUser(@ModelAttribute("user") User editedUser) throws UsernameNotFoundException {
@@ -72,27 +61,27 @@ public class Admins {
 //        return "redirect:/admin/";
 //    }
 
-    @GetMapping("/{id}/edit")
-    public String showEditUserPage(@PathVariable("id") long id, Model model) throws Exception {
-        model.addAttribute("user", userService.getItemById(id));
-        return "admin/edit";
-    }
+//    @GetMapping("/{id}/edit")
+//    public String showEditUserPage(@PathVariable("id") long id, Model model) throws Exception {
+//        model.addAttribute("user", userService.getItemById(id));
+//        return "admin/edit";
+//    }
 
-    @PatchMapping("/{id}")
-    public String editUser(@ModelAttribute("user") User editedUser, @PathVariable("id") long id) throws UsernameNotFoundException {
-        userService.updateItem(editedUser, id);
-        return "redirect:/admin/";
-    }
+//    @PatchMapping("/{id}")
+//    public String editUser(@ModelAttribute("user") User editedUser, @PathVariable("id") long id) throws UsernameNotFoundException {
+//        userService.updateItem(editedUser, id);
+//        return "redirect:/admin/";
+//    }
 
-    @DeleteMapping("/{id}")
-    public String deleteUser(@ModelAttribute("user") User deletedUser) {
-        userService.deleteItem(deletedUser);
-        return "redirect:/admin/";
-    }
+//    @DeleteMapping("/{id}")
+//    public String deleteUser(@ModelAttribute("user") User deletedUser) {
+//        userService.deleteItem(deletedUser);
+//        return "redirect:/admin/users";
+//    }
 
     @PostMapping("/edit")
-    public String editModal(@ModelAttribute("editUser") User editedUser) {
-        userService.saveItem(editedUser);
-        return "redirect:/";
+    public String editModal(User user) {
+        userService.saveItem(user);
+        return "redirect:/admin/users";
     }
 }

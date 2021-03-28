@@ -2,11 +2,10 @@ package ru.kulinartem.springboot.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.kulinartem.springboot.entity.Role;
 import ru.kulinartem.springboot.entity.User;
 import ru.kulinartem.springboot.service.RoleService;
 import ru.kulinartem.springboot.service.UserService;
@@ -36,52 +35,35 @@ public class Admins {
         return "admin/users";
     }
 
-    @GetMapping("/{id}")
-    public User showUserPage(@PathVariable("id") long id) throws Exception {
-        return userService.getItemById(id);
-    }
-
-    @GetMapping("/new")
-    public String showNewUserPage(@ModelAttribute("newUser") User newUser, Model model) {
-        model.addAttribute("roles", roleService.getAllItems());
-        return "admin/newUser";
-    }
-
-//    @PostMapping("/users")
-//    public String createNewUser(@ModelAttribute("newUser") User newUser, Model model) {
-//        model.addAttribute("editedUser", newUser);
-//        newUser.setPassword(new BCryptPasswordEncoder(12).encode(newUser.getPassword()));
-//        userService.saveItem(newUser);
-//        return "redirect:/admin/users";
-//    }
-
-//    @PatchMapping("/users")
-//    public String editUser(@ModelAttribute("user") User editedUser) throws UsernameNotFoundException {
-//        userService.updateItem(editedUser, editedUser.getId());
-//        return "redirect:/admin/";
-//    }
-
-//    @GetMapping("/{id}/edit")
-//    public String showEditUserPage(@PathVariable("id") long id, Model model) throws Exception {
-//        model.addAttribute("user", userService.getItemById(id));
-//        return "admin/edit";
-//    }
-
-//    @PatchMapping("/{id}")
-//    public String editUser(@ModelAttribute("user") User editedUser, @PathVariable("id") long id) throws UsernameNotFoundException {
-//        userService.updateItem(editedUser, id);
-//        return "redirect:/admin/";
-//    }
-
-//    @DeleteMapping("/{id}")
-//    public String deleteUser(@ModelAttribute("user") User deletedUser) {
-//        userService.deleteItem(deletedUser);
-//        return "redirect:/admin/users";
-//    }
-
-    @PostMapping("/edit")
-    public String editModal(User user) {
-        userService.saveItem(user);
+    @PostMapping("/users")
+    public String createNewUserPage(@ModelAttribute("newUser") User newUser) {
+        userService.saveItem(newUser);
         return "redirect:/admin/users";
+    }
+
+    @PatchMapping("/edit/{id}")
+    public String editModalPage(@PathVariable("id") long id,
+                            @RequestParam("editEmail") String email,
+                            @RequestParam("editPassword") String password,
+                            @RequestParam(value = "editRole") Role role,
+                            @RequestParam("editName") String name,
+                            @RequestParam("editLastName") String lastname,
+                            @RequestParam("editAge") int age) throws Exception {
+        User user = new User(name, lastname, age, email, password, role);
+        userService.updateItem(user, id);
+        return "redirect:/admin/users";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteModalPage(@PathVariable("id") long id) throws Exception {
+        User deletedUser = userService.getItemById(id);
+        userService.deleteItem(deletedUser);
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/user/{id}")
+    public String showCurrentUserPage(@PathVariable("id") long id, Model model) throws Exception {
+        model.addAttribute("user", userService.getItemById(id));
+        return "/admin/user";
     }
 }

@@ -2,6 +2,7 @@ package ru.kulinartem.springboot.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kulinartem.springboot.entity.User;
@@ -35,6 +36,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public void saveItem(User item) {
+        item.setPassword(new BCryptPasswordEncoder(12).encode(item.getPassword()));
         repository.save(item);
     }
 
@@ -52,6 +54,8 @@ public class UserServiceImpl implements UserService{
         updatedUser.setLastName(item.getLastName());
         updatedUser.setAge(item.getAge());
         updatedUser.setEmail(item.getEmail());
+        updatedUser.setPassword(new BCryptPasswordEncoder(12).encode(item.getPassword()));
+        updatedUser.setRole(item.getRole());
         repository.save(updatedUser);
     }
 
